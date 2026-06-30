@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+
+{% block content %}
+<!-- Hero Section -->
+{% if trending|length > 0 %}
+{% set hero_movie = trending[0] %}
+<section class="hero" style="background-image: url('{{ hero_movie.backdrop_url if hero_movie.backdrop_url else 'https://images.unsplash.com/photo-1536440136628-849c177e76a1?ixlib=rb-4.0.3&auto=format&fit=crop&w=1925&q=80' }}');">
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+        <h1 class="hero-title">{{ hero_movie.title }}</h1>
+        <p class="hero-desc">{{ hero_movie.overview[:150] ~ '...' if hero_movie.overview else 'Experience personalized recommendations powered by state-of-the-art AI algorithms, tailoring every suggestion to your unique taste.' }}</p>
+        <div class="hero-buttons">
+            <button class="btn btn-play" onclick="window.location.href='/movie/{{ hero_movie.movieId }}'"><i class="fas fa-play"></i> Play</button>
+            <button class="btn btn-more" onclick="window.location.href='/movie/{{ hero_movie.movieId }}'"><i class="fas fa-info-circle"></i> More Info</button>
+        </div>
+    </div>
+</section>
+{% endif %}
+
+<!-- Trending Movies Row -->
+<div class="row">
+    <h2 class="row-header">Trending Now</h2>
+    <div class="carousel-container">
+        <div class="carousel" id="trending-carousel">
+            {% for movie in trending %}
+            <div class="movie-card" onclick="window.location.href='/movie/{{ movie.movieId }}'">
+                <div class="poster-wrapper">
+                    {% if movie.backdrop_url %}
+                    <img src="{{ movie.backdrop_url }}" alt="{{ movie.title }}" class="poster-image">
+                    {% else %}
+                    <div class="poster-fallback gradient-bg-{{ loop.index % 5 + 1 }}">
+                        <span class="fallback-text">{{ movie.title[:2].upper() }}</span>
+                    </div>
+                    {% endif %}
+                </div>
+                <div class="movie-info">
+                    <div class="info-icons">
+                        <button class="icon-btn play"><i class="fas fa-play"></i></button>
+                        <button class="icon-btn"><i class="fas fa-plus"></i></button>
+                        <button class="icon-btn"><i class="far fa-thumbs-up"></i></button>
+                    </div>
+                    <div class="movie-meta-small">
+                        <span class="match-score">{{ "%.0f"|format(movie.rating_mean * 20) }}% Match</span>
+                        <span class="maturity-rating">13+</span>
+                        <span>{{ movie.year }}</span>
+                    </div>
+                    <div class="movie-genres">{{ movie.genres }}</div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+<!-- Genres -->
+<div class="row" style="margin-top: 50px;">
+    <h2 class="row-header">Explore Categories</h2>
+    <div class="container" style="display:flex; flex-wrap: wrap; gap: 10px;">
+        {% for genre in genres %}
+        <div style="background: rgba(255,255,255,0.1); padding: 10px 20px; border-radius: 4px; cursor: pointer; transition: background 0.3s;" onmouseover="this.style.background='rgba(255,255,255,0.3)'" onmouseout="this.style.background='rgba(255,255,255,0.1)'">{{ genre }}</div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

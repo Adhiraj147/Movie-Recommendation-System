@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+
+{% block title %}{{ movie.title }} - MovieMela{% endblock %}
+
+{% block content %}
+<div class="movie-detail-wrapper">
+    <!-- Movie Detail Header -->
+    <section class="detail-hero" style="background-image: url('{{ movie.backdrop_url if movie.backdrop_url else 'https://images.unsplash.com/photo-1536440136628-849c177e76a1?ixlib=rb-4.0.3&auto=format&fit=crop&w=1925&q=80' }}');">
+        <div class="detail-hero-overlay"></div>
+        <div class="detail-content">
+            <h1 class="detail-title">{{ movie.title }}</h1>
+            
+            <div class="detail-meta">
+                <span class="match-score">98% Match</span>
+                <span>{{ movie.year if movie.year else '2026' }}</span>
+                <span class="maturity-rating">13+</span>
+                <span>2h 15m</span>
+            </div>
+            
+            <div class="detail-overview">
+                {{ movie.overview if movie.overview else 'An AI-curated classic from the ' ~ movie.year ~ 's. Dive into the world of ' ~ movie.genres ~ '.' }}
+            </div>
+            
+            <div class="hero-buttons">
+                <button class="btn btn-play"><i class="fas fa-play"></i> Play</button>
+                <button class="icon-btn" style="width: 45px; height: 45px; border-width: 2px;"><i class="fas fa-plus"></i></button>
+                <button class="icon-btn" style="width: 45px; height: 45px; border-width: 2px;"><i class="far fa-thumbs-up"></i></button>
+            </div>
+            
+            <div style="margin-top: 30px; font-size: 0.9rem; color: #a3a3a3;">
+                <p><strong style="color: white;">Genres:</strong> {{ movie.genres }}</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Recommendations -->
+    <section class="recommendations-section">
+        <h2 class="row-header" style="margin-left: 0;">More Like This</h2>
+        <div class="carousel" style="flex-wrap: wrap;">
+            {% for rec in recommendations %}
+            <div class="movie-card" style="flex: 0 0 calc(100% / 5 - 8px); margin-bottom: 20px;" onclick="window.location.href='/movie/{{ rec.movieId }}'">
+                <div class="poster-wrapper">
+                    {% if rec.backdrop_url %}
+                    <img src="{{ rec.backdrop_url }}" alt="{{ rec.title }}" class="poster-image">
+                    {% else %}
+                    <div class="poster-fallback gradient-bg-{{ loop.index % 5 + 1 }}">
+                        <span class="fallback-text">{{ rec.title[:2].upper() }}</span>
+                    </div>
+                    {% endif %}
+                </div>
+                <div class="movie-info">
+                    <div class="info-icons">
+                        <button class="icon-btn play"><i class="fas fa-play"></i></button>
+                        <button class="icon-btn"><i class="fas fa-plus"></i></button>
+                    </div>
+                    <div class="movie-meta-small">
+                        <span class="match-score">{{ "%.0f"|format(rec.similarity_score * 100) }}% Match</span>
+                        <span class="maturity-rating">13+</span>
+                    </div>
+                    <div class="movie-genres">{{ rec.genres }}</div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </section>
+</div>
+{% endblock %}

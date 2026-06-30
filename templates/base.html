@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}MovieMela{% endblock %}</title>
+    <meta name="description" content="Discover movies tailored to your taste with our AI-powered recommendation system.">
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar" id="navbar">
+        <div class="logo">
+            <a href="/">MovieMela</a>
+        </div>
+        <div class="nav-links">
+            <a href="/" class="active">Home</a>
+            <a href="#">TV Shows</a>
+            <a href="#">Movies</a>
+            <a href="#">New & Popular</a>
+            <a href="#">My List</a>
+        </div>
+        <div class="navbar-right">
+            <div class="search-container">
+                <input type="text" id="searchInput" placeholder="Titles, people, genres">
+                <i class="fas fa-search search-icon" onclick="document.getElementById('searchInput').classList.toggle('active'); document.getElementById('searchInput').focus();"></i>
+                <div id="searchSuggestions" class="suggestions-box"></div>
+            </div>
+            <div class="nav-links">
+                <a href="#"><i class="fas fa-bell"></i></a>
+                <a href="#"><i class="fas fa-user-circle"></i></a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2026 MovieMela built with Python & FastAPI.</p>
+    </footer>
+
+    <script src="/static/js/main.js"></script>
+</body>
+</html>
