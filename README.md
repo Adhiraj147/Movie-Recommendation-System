@@ -77,7 +77,7 @@ Start the FastAPI server:
 ```bash
 uvicorn app:app --reload
 ```
-Navigate to `http://127.0.0.0:8000` in your browser.
+Navigate to ` http://127.0.0.1:8000` in your browser.
 
 ## 🔌 API Endpoints
 - `GET /`: Returns the home page with trending movies and genres.
